@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSTEP AI Speaking Coach</title>
+    <!-- Import Vapi Web SDK -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; text-align: center; padding: 20px; }
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        p { color: #7f8c8d; margin-bottom: 30px; }
+        .btn { display: block; width: 85%; max-width: 300px; margin: 15px auto; padding: 20px; font-size: 18px; font-weight: bold; color: white; border: none; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .btn-p1 { background-color: #3498db; }
+        .btn-p2 { background-color: #e67e22; }
+        .btn-p3 { background-color: #9b59b6; }
+        .btn:active { transform: scale(0.98); }
+        .btn-stop { background-color: #e74c3c; display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>VSTEP AI Coach 🇻🇳</h1>
+    <p>Tap a part below to start practicing your speaking.</p>
+
+    <!-- 3 Part Buttons -->
+    <button class="btn btn-p1" id="start-p1" onclick="startCall('a976d0d7-248c-4080-8e41-02ee7077cd63')">🗣️ Practice Part 1</button>
+    <button class="btn btn-p2" id="start-p2" onclick="startCall('e1e896a5-a6a5-4359-8a0b-1e7c22646fef')">⚖️ Practice Part 2</button>
+    <button class="btn btn-p3" id="start-p3" onclick="startCall('ed9973cb-e430-45cc-87e3-a9a94cae815c')">📊 Practice Part 3</button>
+    
+    <!-- End Call Button -->
+    <button class="btn btn-stop" id="stop-btn" onclick="stopCall()">🔴 End Call</button>
+
+    <script>
+        // Initialize Vapi with your Public Key
+        const vapi = new Vapi("d9563e05-7b5b-447a-b7f1-b6884422df71");
+
+        function startCall(assistantId) {
+            vapi.start(assistantId);
+            // Hide part buttons, show stop button
+            document.getElementById('start-p1').style.display = 'none';
+            document.getElementById('start-p2').style.display = 'none';
+            document.getElementById('start-p3').style.display = 'none';
+            document.getElementById('stop-btn').style.display = 'block';
+        }
+
+        function stopCall() {
+            vapi.stop();
+            // Reset buttons
+            document.getElementById('start-p1').style.display = 'block';
+            document.getElementById('start-p2').style.display = 'block';
+            document.getElementById('start-p3').style.display = 'block';
+            document.getElementById('stop-btn').style.display = 'none';
+        }
+
+        // Listen for call ending naturally on AI side
+        vapi.on("call-end", () => {
+            stopCall();
+        });
+    </script>
+</body>
+</html>
